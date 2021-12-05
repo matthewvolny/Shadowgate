@@ -36,7 +36,7 @@
       border: 1px dotted sienna;
       width: 70%;
     }
-    .playerItems {
+    .playerInventory {
       text-align: center;
       font-size: 1.2rem; /*will scale with root font-size*/
       border: 1px dotted springgreen;
@@ -65,12 +65,7 @@
         <div class="door">Door</div>
         <!--<img src="./assets/room1-doorway.png" />-->
       </div>
-      <div class="playerItems">
-        <div>Candlestick</div>
-        <div>Medallion</div>
-        <div>Gold cup</div>
-        <div>key</div>
-      </div>
+      <div class="playerInventory">Player Inventory</div>
     </div>
     <div class="playerDecisionInterface">
       <div class="openButton"><span>OPEN</span></div>
@@ -79,15 +74,20 @@
     </div>
 
     <script>
+      let PlayerInventory = document.querySelector(".playerInventory");
+      let locationItems = document.querySelector(".locationItems");
+
       let openAction = document.querySelector(".openButton");
       let takeAction = document.querySelector(".takeButton");
       let lookAction = document.querySelector(".lookButton");
 
-      let locationItems = document.querySelector(".locationItems");
-
       let skull = document.querySelector(".skull");
       let door = document.querySelector(".door");
 
+      //player inventory
+      let inventoryArray = [];
+
+      //functions executing on player actions
       const open = (item) => {
         switch (item) {
           case "skull":
@@ -137,6 +137,9 @@
             break;
           case "key":
             console.log("you have taken the key");
+            inventoryArray.push("key");
+            console.log(inventoryArray);
+            PlayerInventory.innerHTML = inventoryArray;
             break;
         }
       };
@@ -173,7 +176,7 @@
         evaluateFunction(item);
       });
 
-      //call functions based on the 'action' taken and the 'item' selected
+      //function calls based on the 'action' taken and the 'item' selected
       function evaluateFunction(item) {
         switch (
           action //i.e. if the action is 'open', call open(item)
