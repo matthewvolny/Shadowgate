@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    :root {
+      line-height: 1.2;
+      /* font-size: calc(0.7em + 1vw); */
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    *,
+    ::before,
+    ::after {
+      box-sizing: inherit;
+    }
+    body * + * {
+      /*selects all elements on the page that are not the first child of their parent*/
+      margin-top: 1.1em;
+    }
+
+    .container {
+      display: flex;
+    }
+    .locationItems {
+      font-size: 1.2rem; /*will scale with root font-size*/
+      border-radius: 0.5em;
+      /* width: 60vmin; */
+      margin: 1em; /*will scale with root/element font-size*/
+      padding: 1em; /*will scale with root/element font-size*/
+      border: 1px dotted sienna;
+      width: 70%;
+    }
+    .playerItems {
+      text-align: center;
+      font-size: 1.2rem; /*will scale with root font-size*/
+      border: 1px dotted springgreen;
+      padding: 1em; /*will scale with root/element font-size*/
+      margin: 1em 1em 1em 0em; /*will scale with root/element font-size*/
+      border-radius: 0.5em;
+      overflow: auto; /*scroll bar appears if content overflows */
+      width: 30%;
+    }
+
+    .msg {
+      font-size: 1.1rem;
+      border: 1px dotted springgreen;
+      padding: 1em;
+      margin: 1em;
+      border-radius: 1em;
+      overflow: auto; /*scroll bar appears if content overflows*/
+      height: 50vmin;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="locationItems">
+        Location images
+        <div class="skull">Skull</div>
+        <div class="door">Door</div>
+        <!--<img src="./assets/room1-doorway.png" />-->
+      </div>
+      <div class="playerItems">
+        <div>Candlestick</div>
+        <div>Medallion</div>
+        <div>Gold cup</div>
+        <div>key</div>
+      </div>
+    </div>
+    <div class="playerDecisionInterface">
+      <div class="openButton"><span>OPEN</span></div>
+      <div class="lookButton"><span>LOOK</span></div>
+      <div class="takeButton"><span>TAKE</span></div>
+    </div>
+
+    <script>
+      let openAction = document.querySelector(".openButton");
+      let takeAction = document.querySelector(".takeButton");
+      let lookAction = document.querySelector(".lookButton");
+
+      let locationItems = document.querySelector(".locationItems");
+
+      let skull = document.querySelector(".skull");
+      let door = document.querySelector(".door");
+
+      const open = (item) => {
+        switch (item) {
+          case "skull":
+            console.log("the skull opens, it reveals a key");
+            let key = document.createElement("div");
+            key.innerHTML = "Key";
+            locationItems.replaceChild(key, skull);
+            key.addEventListener("click", () => {
+              item = "key";
+              console.log(item);
+              evaluateFunction(item);
+            });
+            break;
+          case "door":
+            console.log("the door is locked");
+            break;
+          case "self":
+            console.log("you are wasting your time");
+            break;
+        }
+      };
+
+      const look = (item) => {
+        switch (item) {
+          case "skull":
+            console.log("it is an old skull fitted to the wall");
+            break;
+          case "door":
+            console.log("it is an old, and firmly locked wooden door");
+            break;
+          case "self":
+            console.log("there is no time for vanity");
+            break;
+          case "key":
+            console.log("a tarnished brass key is fixed to the wall");
+            break;
+        }
+      };
+
+      const take = (item) => {
+        switch (item) {
+          case "skull":
+            console.log("you cannot take it");
+            break;
+          case "door":
+            console.log("you are wasting your time");
+            break;
+          case "key":
+            console.log("you have taken the key");
+            break;
+        }
+      };
+
+      let action = "";
+      let item = "";
+
+      //player actions
+      lookAction.addEventListener("click", () => {
+        action = "look";
+        console.log(action);
+      });
+
+      openAction.addEventListener("click", () => {
+        action = "open";
+        console.log(action);
+      });
+
+      takeAction.addEventListener("click", () => {
+        action = "take";
+        console.log(action);
+      });
+
+      //items in the world
+      skull.addEventListener("click", () => {
+        item = "skull";
+        console.log(item);
+        evaluateFunction(item);
+      });
+
+      door.addEventListener("click", () => {
+        item = "door";
+        console.log(item);
+        evaluateFunction(item);
+      });
+
+      //call functions based on the 'action' taken and the 'item' selected
+      function evaluateFunction(item) {
+        switch (
+          action //i.e. if the action is 'open', call open(item)
+        ) {
+          case "open":
+            open(item);
+            break;
+          case "take":
+            take(item);
+            break;
+          case "look":
+            look(item);
+            break;
+        }
+      }
+
+      ////////i = 0;
+
+      /////////////
+      //   // create context object
+      //   var context = {};
+
+      //   // assign functions to the object
+      //   context["fnLogin"] = fnLogin;
+      //   context["fnLogout"] = fnLogout;
+
+      //   // this is the method performing execution of functions
+      //   function execFn(fnName, ctx /*, args */) {
+      //     // get passed arguments except first two (fnName, ctx)
+      //     var args = Array.prototype.slice.call(arguments, 2);
+      //     // execute the function with passed parameters and return result
+      //     return ctx[fnName].apply(ctx, args);
+      //   }
+
+      /*
+       * Usage
+       */
+
+      // execFn(strfn, context, "user2", "pwd2");
+      // execFn("fnLogout", context);
+
+      /*
+                  openButton.addEventListener("click", () => {
+                    if (selection === "") {
+
+                    }
+                    abilitiesArray = "open";
+                    console.log(abilitiesArray);
+                  });
+
+                  skull.addEventListener("click", () => {
+                    abilitiesArray
+                    abilitiesArray("skull");
+                  });
+            */
+      //open("skull");
+    </script>
+  </body>
+</html>
