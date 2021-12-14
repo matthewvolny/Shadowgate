@@ -34,7 +34,7 @@
       margin: 1em; /*will scale with root/element font-size*/
       padding: 1em; /*will scale with root/element font-size*/
       border: 1px dotted sienna;
-      width: 60%;
+      width: 70%;
     }
     .playerInventory {
       text-align: center;
@@ -44,7 +44,7 @@
       margin: 1em 1em 1em 0em; /*will scale with root/element font-size*/
       border-radius: 0.5em;
       overflow: auto; /*scroll bar appears if content overflows */
-      width: 40%;
+      width: 30%;
     }
 
     .container2 {
@@ -87,7 +87,7 @@
   <body>
     <div class="container">
       <div class="locationItems">
-        Room 1
+        Room 2
         <div class="skull">Skull</div>
         <div class="door">Door</div>
         <!--<img src="./assets/room1-doorway.png" />-->
@@ -96,7 +96,7 @@
     </div>
     <div class="container2">
       <div class="map">
-        <a href="./room2.html" class="">room 2</a>
+        <a href="./index.html" class="">room 1</a>
       </div>
       <div class="playerDecisionInterface">
         <div class="openButton"><span>OPEN</span></div>
@@ -104,7 +104,6 @@
         <div class="takeButton"><span>TAKE</span></div>
       </div>
     </div>
-
     <script>
       let PlayerInventory = document.querySelector(".playerInventory");
       let locationItems = document.querySelector(".locationItems");
@@ -118,16 +117,6 @@
 
       //player inventory
       let inventoryArray = [];
-
-      /* //room objects
-          const rooms = [{1:{
-            baseImageUrl : "./room1-doorway.png", Image2Url : "", Image3Url : "", item1:"skull",item1Look:"It's the skull of some creature. Its meaning
-      seems quite clear: death
-      lurks inside.", item1Take :
-
-          }}
-          ]
-*/
 
       //functions executing on player actions
       const open = (item) => {
@@ -188,9 +177,6 @@
 
       let action = "";
       let item = "";
-      let response = "";
-      let genericResponses =
-        "randomly generated responses for non-specific interactions";
 
       //items in the world
       skull.addEventListener("click", () => {
@@ -226,11 +212,11 @@
       });
 
       //function calls based on the 'action' taken and the 'item' selected
-      function evaluateFunction(item, a) {
+      function evaluateFunction(item) {
         switch (
           action //i.e. if the action is 'open', call open(item)
         ) {
-          case "open" /*  */:
+          case "open":
             open(item);
             break;
           case "take":
