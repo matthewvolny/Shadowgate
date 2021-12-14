@@ -86,6 +86,7 @@
   </style>
   <body>
     <div class="container">
+      <img src="" alt="" class="room" />
       <div class="locationItems">
         Room 1
         <div class="skull">Skull</div>
@@ -99,148 +100,11 @@
         <a href="./room2.html" class="">room 2</a>
       </div>
       <div class="playerDecisionInterface">
-        <div class="openButton"><span>OPEN</span></div>
-        <div class="lookButton"><span>LOOK</span></div>
-        <div class="takeButton"><span>TAKE</span></div>
+        <div class="openButton" value="open"><span>OPEN</span></div>
+        <div class="lookButton" value="look"><span>LOOK</span></div>
+        <div class="takeButton" value="take"><span>TAKE</span></div>
       </div>
     </div>
-
-    <script>
-      let PlayerInventory = document.querySelector(".playerInventory");
-      let locationItems = document.querySelector(".locationItems");
-
-      let openAction = document.querySelector(".openButton");
-      let takeAction = document.querySelector(".takeButton");
-      let lookAction = document.querySelector(".lookButton");
-
-      let skull = document.querySelector(".skull");
-      let door = document.querySelector(".door");
-
-      //player inventory
-      let inventoryArray = [];
-
-      /* //room objects
-          const rooms = [{1:{
-            baseImageUrl : "./room1-doorway.png", Image2Url : "", Image3Url : "", item1:"skull",item1Look:"It's the skull of some creature. Its meaning
-      seems quite clear: death
-      lurks inside.", item1Take :
-
-          }}
-          ]
-*/
-
-      //functions executing on player actions
-      const open = (item) => {
-        switch (item) {
-          case "skull":
-            console.log("the skull opens, it reveals a key");
-            let key = document.createElement("div");
-            key.innerHTML = "Key";
-            locationItems.replaceChild(key, skull);
-            key.addEventListener("click", () => {
-              item = "key";
-              console.log(item);
-              evaluateFunction(item);
-            });
-            break;
-          case "door":
-            console.log("the door is locked");
-            break;
-          case "self":
-            console.log("you are wasting your time");
-            break;
-        }
-      };
-
-      const look = (item) => {
-        switch (item) {
-          case "skull":
-            console.log("it is an old skull fitted to the wall");
-            break;
-          case "door":
-            console.log("it is an old, and firmly locked wooden door");
-            break;
-          case "self":
-            console.log("there is no time for vanity");
-            break;
-          case "key":
-            console.log("a tarnished brass key is fixed to the wall");
-            break;
-        }
-      };
-
-      const take = (item) => {
-        switch (item) {
-          case "skull":
-            console.log("you cannot take it");
-            break;
-          case "door":
-            console.log("you are wasting your time");
-            break;
-          case "key":
-            console.log("you have taken the key");
-            inventoryArray.push("key");
-            console.log(inventoryArray);
-            PlayerInventory.innerHTML = inventoryArray;
-            break;
-        }
-      };
-
-      let action = "";
-      let item = "";
-      let response = "";
-      let genericResponses =
-        "randomly generated responses for non-specific interactions";
-
-      //items in the world
-      skull.addEventListener("click", () => {
-        item = "skull";
-        console.log(item);
-        evaluateFunction(item);
-      });
-
-      door.addEventListener("click", () => {
-        item = "door";
-        console.log(item);
-        evaluateFunction(item);
-      });
-
-      ////////////////////////////////////
-      ////////present in each room///////
-      ////////////////////////////////////
-
-      //player actions
-      lookAction.addEventListener("click", () => {
-        action = "look";
-        console.log(action);
-      });
-
-      openAction.addEventListener("click", () => {
-        action = "open";
-        console.log(action);
-      });
-
-      takeAction.addEventListener("click", () => {
-        action = "take";
-        console.log(action);
-      });
-
-      //function calls based on the 'action' taken and the 'item' selected
-      function evaluateFunction(item, a) {
-        switch (
-          action //i.e. if the action is 'open', call open(item)
-        ) {
-          case "open" /*  */:
-            open(item);
-            break;
-          case "take":
-            take(item);
-            break;
-          case "look":
-            look(item);
-            break;
-        }
-      }
-    </script>
+    <script src="./scripts.js/scripts.js"></script>
   </body>
 </html>
