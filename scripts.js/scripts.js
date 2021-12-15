@@ -9,7 +9,7 @@ let skull = document.querySelector(".skull");
 let door = document.querySelector(".door");
 
 const playerActions = document.querySelector(".playerDecisionInterface");
-const room = document.querySelector(".room");
+const roomContainer = document.querySelector(".room-container");
 
 //player inventory
 let inventoryArray = [];
@@ -18,27 +18,53 @@ let inventoryArray = [];
 const dataObject = [
   {
     baseUrl: "./room1-doorway.png",
-    image2: "",
-    Image3Url: "",
-    width: '50px',
-    height: '50px',
-    left: '100px',
-    right: '100px',
-    items: {item1: "skull", item2: "torch"},
-    item1Look:
-      "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
-    item1Take: "",
-  },
-  {
-    baseUrl: "./room1-doorway.png",
-    Image2Url: "",
-    Image3Url: "",
-    item1: "skull",
-    item1Look:
-      "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
-    item1Take: "",
+    roomScript: "",
+    mapCoordinates: [
+      { index: 1, position: "top" },
+      { index: "", position: "" },
+      { index: "", position: "" },
+      { index: "", position: "" },
+    ],
+    items: [
+      {
+        name: "skull",
+        left: "100px",
+        right: "100px",
+        lookText:
+          "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
+        openText: "As if by magic, the skull rises.",
+        openUrl: "./room1-doorway.png",
+        takenUrl: "./room1-doorway.png",
+      },
+      {
+        name: "door",
+        left: "100px",
+        right: "100px",
+        lookText: "It's a heavy wooden door with iron hinges.",
+        openText: "As if by magic, the skull rises.",
+        takenUrl: "./room1-doorway.png",
+      },
+    ],
   },
 ];
+
+let roomIndex = 0; // set at 0 for start of game
+//render map for current room
+const renderMap = (dataObject) => {
+  //console.log(dataObject[roomIndex]);
+  dataObject[roomIndex].mapCoordinates.forEach((coordinate) => {
+    //console.log(`${coordinate.index}`);
+    if (coordinate.index !== "") {
+      let mapDot = document.createElement("div");
+      mapDot.className = `${coordinate.position}`;
+      roomContainer.appendChild(mapDot);
+    }
+  });
+};
+
+//after clicking mapDot
+//changeRoomIndex()
+renderMap(dataObject);
 
 //functions executing on player actions
 let genericResponses = "randomly generated responses";
@@ -99,13 +125,16 @@ const take = (item) => {
 };
 
 //*render initial room image
+/*
 const renderRoom = (roomNumber) => {
   room.src = `${dataObject[roomNumber].baseUrl}`;
 };
 roomNumber = 0; //you start out at 0, then clicking on the map, changes that value depending on where you are
 renderRoom(roomNumber);
+*/
 
 //render items on the screen
+/*
 renderedItemsArray = [];
 renderitems(roomNumber);
 const renderItems = (roomNumber) => {
@@ -115,12 +144,12 @@ const renderItems = (roomNumber) => {
   newItem.style.left = `${dataObject[roomNumber].left}`;
   newItem.style.top = `${dataObject[roomNumber].top}`;
   newItem.addEventListener("click", (e) => {
-    item = ${dataObject[roomNumber].item};
+    item = `${dataObject[roomNumber].item}`;
     renderedItemsArray.push(item);
     evaluateFunction(item);
   });
 };
-
+*/
 ////////////////////////////////////
 ////////present in each room///////
 ////////////////////////////////////
@@ -128,7 +157,7 @@ const renderItems = (roomNumber) => {
 //player actions
 let action = "";
 playerActions.addEventListener("click", (e) => {
-  action = event.target.value;
+  action = e.target.value;
   console.log(action);
 });
 

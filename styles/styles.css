@@ -1,0 +1,114 @@
+:root {
+  line-height: 1.2;
+  /* font-size: calc(0.7em + 1vw); */
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+body * + * {
+  /*selects all elements on the page that are not the first child of their parent*/
+  margin-top: 1.1em;
+}
+
+.container {
+  display: flex;
+}
+.locationItems {
+  font-size: 1.2rem; /*will scale with root font-size*/
+  border-radius: 0.5em;
+  /* width: 60vmin; */
+  margin: 1em; /*will scale with root/element font-size*/
+  padding: 1em; /*will scale with root/element font-size*/
+  border: 1px dotted sienna;
+  width: 60%;
+}
+.playerInventory {
+  text-align: center;
+  font-size: 1.2rem; /*will scale with root font-size*/
+  border: 1px dotted springgreen;
+  padding: 1em; /*will scale with root/element font-size*/
+  margin: 1em 1em 1em 0em; /*will scale with root/element font-size*/
+  border-radius: 0.5em;
+  overflow: auto; /*scroll bar appears if content overflows */
+  width: 40%;
+}
+
+.container2 {
+  display: flex;
+  margin-top: 0;
+}
+
+.map {
+  text-align: center;
+  font-size: 1.2rem; /*will scale with root font-size*/
+  border: 1px dotted goldenrod;
+  padding: 1em; /*will scale with root/element font-size*/
+  margin: 0em 1em 1em 1em; /*will scale with root/element font-size*/
+  border-radius: 0.5em;
+  overflow: auto; /*scroll bar appears if content overflows */
+  width: 40%;
+}
+
+.playerDecisionInterface {
+  text-align: center;
+  font-size: 1.2rem; /*will scale with root font-size*/
+  border: 1px dotted gray;
+  padding: 1em; /*will scale with root/element font-size*/
+  margin: 0em 1em 1em 0em; /*will scale with root/element font-size*/
+  border-radius: 0.5em;
+  overflow: auto; /*scroll bar appears if content overflows */
+  width: 60%;
+}
+
+.msg {
+  font-size: 1.1rem;
+  border: 1px dotted springgreen;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 1em;
+  overflow: auto; /*scroll bar appears if content overflows*/
+  height: 50vmin;
+}
+
+/*map coordinates */
+.top {
+  position: absolute;
+  left: 50px;
+  top: 300px;
+  width: 20px;
+  height: 20px;
+  border: greenyellow 2px solid;
+  z-index: 10;
+}
+
+.bottom {
+  position: absolute;
+  left: 50px;
+  top: 300px;
+  width: 20px;
+  height: 20px;
+  border: black 2px solid;
+}
+
+.left {
+  position: absolute;
+  left: 50px;
+  top: 300px;
+  width: 20px;
+  height: 20px;
+  border: black 2px solid;
+}
+
+.right {
+  position: absolute;
+  left: 50px;
+  top: 300px;
+  width: 20px;
+  height: 20px;
+  border: black 2px solid;
+}
