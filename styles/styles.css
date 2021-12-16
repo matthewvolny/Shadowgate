@@ -114,6 +114,9 @@ body * + * {
 }
 
 /*item positioning*/
+.room-image {
+  z-index: 0;
+}
 
 .skull {
   position: absolute;

@@ -33,8 +33,20 @@ const dataObject = [
         lookText:
           "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
         openText: "As if by magic, the skull rises.",
+        useText: "",
+        leaveText: "",
+        takeText: "",
+        closeText: "",
+        hitText: "",
+        speakText: "",
+        lookUrl: "",
         openUrl: "./room1-doorway.png",
-        takenUrl: "./room1-doorway.png",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
       },
       {
         name: "door",
@@ -61,8 +73,20 @@ const dataObject = [
         lookText:
           "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
         openText: "As if by magic, the skull rises.",
+        useText: "",
+        leaveText: "",
+        takeText: "",
+        closeText: "",
+        hitText: "",
+        speakText: "",
+        lookUrl: "",
         openUrl: "./room1-doorway.png",
-        takenUrl: "./room1-doorway.png",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
       },
       {
         name: "",
@@ -91,11 +115,19 @@ const renderMap = (dataObject) => {
   });
 };
 
+//render room url
+const renderRoom = (dataObject) => {
+  let roomImage = document.createElement("img");
+  roomImage.innerHTML = `<img onclick="....could I have items here..." src = "(${dataObject[roomIndex].baseUrl})">*</img>`;
+  roomImage.className = "room-image";
+  roomArea.appendChild(roomImage);
+};
+
 //render items in the room
 const renderItems = (dataObject) => {
   dataObject[roomIndex].items.forEach((item) => {
     let itemDot = document.createElement("div");
-    itemDot.innerHTML = `<div onclick="evaluateFunction(${item.name})">*</div>`;
+    itemDot.innerHTML = `<div onclick="evaluateFunction(${item.name}, ${item.lookText}, ${item.openText}, ${item.useText}, ${item.leaveText}, ${item.takeText}, ${item.closeText}, ${item.hitText}, ${item.speakText}, ${item.lookUrl}, ${item.openUrl}, ${item.useUrl}, ${item.leaveUrl}, ${item.takeUrl}, ${item.closeUrl}, ${item.hitUrl}, ${item.speakUrl})">*</div>`;
     console.log(item.name);
     itemDot.className = `${item.position}`; //to position the elements
     console.log(item.position);
@@ -111,6 +143,7 @@ const changeRoom = (y) => {
   console.log(roomIndex);
   renderMap(dataObject);
   renderItems(dataObject);
+  renderRoom(dataObject);
 };
 
 renderMap(dataObject);
