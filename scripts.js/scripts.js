@@ -9,7 +9,8 @@ let skull = document.querySelector(".skull");
 let door = document.querySelector(".door");
 
 const playerActions = document.querySelector(".playerDecisionInterface");
-const roomContainer = document.querySelector(".room-container");
+const mapArea = document.querySelector(".map-area");
+const roomArea = document.querySelector(".room-area");
 
 //player inventory
 let inventoryArray = [];
@@ -20,16 +21,15 @@ const dataObject = [
     baseUrl: "./room1-doorway.png",
     roomScript: "",
     mapCoordinates: [
-      { index: 1, position: "top" },
-      { index: "", position: "" },
-      { index: "", position: "" },
-      { index: "", position: "" },
+      { index: 1, position: "top" }, //top
+      { index: "", position: "" }, //right
+      { index: "", position: "" }, //bottom
+      { index: "", position: "" }, //left
     ],
     items: [
       {
         name: "skull",
-        left: "100px",
-        right: "100px",
+        position: "skull",
         lookText:
           "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
         openText: "As if by magic, the skull rises.",
@@ -38,8 +38,35 @@ const dataObject = [
       },
       {
         name: "door",
-        left: "100px",
-        right: "100px",
+        position: "door",
+        lookText: "It's a heavy wooden door with iron hinges.",
+        openText: "As if by magic, the skull rises.",
+        takenUrl: "./room1-doorway.png",
+      },
+    ],
+  },
+  {
+    baseUrl: "room2",
+    roomScript: "",
+    mapCoordinates: [
+      { index: 2, position: "top" },
+      { index: "", position: "" },
+      { index: 0, position: "bottom" },
+      { index: "", position: "" },
+    ],
+    items: [
+      {
+        name: "",
+        position: "",
+        lookText:
+          "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
+        openText: "As if by magic, the skull rises.",
+        openUrl: "./room1-doorway.png",
+        takenUrl: "./room1-doorway.png",
+      },
+      {
+        name: "",
+        position: "",
         lookText: "It's a heavy wooden door with iron hinges.",
         openText: "As if by magic, the skull rises.",
         takenUrl: "./room1-doorway.png",
@@ -48,24 +75,55 @@ const dataObject = [
   },
 ];
 
+//roomIndex specifies player's location in the game
 let roomIndex = 0; // set at 0 for start of game
+
 //render map for current room
 const renderMap = (dataObject) => {
-  //console.log(dataObject[roomIndex]);
   dataObject[roomIndex].mapCoordinates.forEach((coordinate) => {
-    //console.log(`${coordinate.index}`);
     if (coordinate.index !== "") {
       let mapDot = document.createElement("div");
-      mapDot.className = `${coordinate.position}`;
-      roomContainer.appendChild(mapDot);
+      mapDot.innerHTML = `<div onclick="changeRoom(${coordinate.index})">*</div>`;
+      console.log(coordinate.index);
+      mapDot.className = `${coordinate.position}`; //to position the elements
+      mapArea.appendChild(mapDot);
     }
   });
 };
 
-//after clicking mapDot
-//changeRoomIndex()
-renderMap(dataObject);
+//render items in the room
+const renderItems = (dataObject) => {
+  dataObject[roomIndex].items.forEach((item) => {
+    let itemDot = document.createElement("div");
+    itemDot.innerHTML = `<div onclick="evaluateFunction(${item.name})">*</div>`;
+    console.log(item.name);
+    itemDot.className = `${item.position}`; //to position the elements
+    console.log(item.position);
+    roomArea.appendChild(itemDot);
+  });
+};
 
+//changes room, calls renderMap to generate new room
+const changeRoom = (y) => {
+  mapArea.innerHTML = "";
+  roomArea.innerHTML = "";
+  roomIndex = y;
+  console.log(roomIndex);
+  renderMap(dataObject);
+  renderItems(dataObject);
+};
+
+renderMap(dataObject);
+renderItems(dataObject);
+
+// name: "skull",
+//         left: "100px",
+//         right: "100px",
+//         lookText:
+//           "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
+//         openText: "As if by magic, the skull rises.",
+//         openUrl: "./room1-doorway.png",
+//         takenUrl: "./room1-doorway.png",
 //functions executing on player actions
 let genericResponses = "randomly generated responses";
 const open = (item) => {
