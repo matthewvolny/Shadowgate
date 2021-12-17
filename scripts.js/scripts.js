@@ -1,25 +1,28 @@
 let PlayerInventory = document.querySelector(".playerInventory");
 let locationItems = document.querySelector(".locationItems");
 
-let openAction = document.querySelector(".openButton");
-let takeAction = document.querySelector(".takeButton");
-let lookAction = document.querySelector(".lookButton");
+let openAction = document.querySelector(".open");
+let takeAction = document.querySelector(".take");
+let lookAction = document.querySelector(".look");
 
 let skull = document.querySelector(".skull");
 let door = document.querySelector(".door");
 
-const playerActions = document.querySelector(".playerDecisionInterface");
+const primaryActions = document.querySelector(".player-primary-actions");
 const mapArea = document.querySelector(".map-area");
 const roomArea = document.querySelector(".room-area");
 
 //player inventory
-let inventoryArray = [];
+let playerInventoryArray = [];
 
 //room objects
 const dataObject = [
   {
     baseUrl: "./room1-doorway.png",
-    roomScript: "",
+    entryScript:
+      "The last thing that you remember is standing before the wizard Lakmir as he waved his hands. Now you find yourself staring at an entryway which lies at the edge of a forest. The Druid's words ring in your ears: within the castle Shadowgate lies your quest. The dreaded Warlock Lord will use his Black Magic to raise the Behemoth from the dark depths. The combination of his evil arts and the great Titan's power will surely destroy us all!! You are the last of the line of Kings, the seed of prophecy that was foretold eons ago. Only you can stop the evil one from darkening our world forever! Fare thee well. Gritting your teeth, you swear by your god's name that you will destroy the Warlock Lord!!",
+    reentryScript:
+      "It's the entrance to Shadowgate. You can hear wolves howling deep in the forest behind you...",
     mapCoordinates: [
       { index: 1, position: "top" }, //top
       { index: "", position: "" }, //right
@@ -36,9 +39,45 @@ const dataObject = [
         useText: "",
         leaveText: "",
         takeText: "",
+        closeText: "The Skull is closed.",
+        hitText: "",
+        speakText: "",
+        lookEffect: "",
+        openEffect: "itemAppears(key)",
+        useEffect: "",
+        leaveEffect: "",
+        takeEffect: "",
+        closeEffect: "",
+        hitEffect: "",
+        speakEffect: "",
+        lookUrl: "",
+        openUrl: "./room1-doorway.png",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
+      },
+      {
+        name: "key",
+        position: "key",
+        lookText: "It's a small iron key",
+        openText: "",
+        useText: "",
+        leaveText: "",
+        takeText: "",
         closeText: "",
         hitText: "",
         speakText: "",
+        lookEffect: "",
+        openEffect: "",
+        useEffect: "",
+        leaveEffect: "",
+        takeEffect: "",
+        closeEffect: "",
+        hitEffect: "",
+        speakEffect: "",
         lookUrl: "",
         openUrl: "./room1-doorway.png",
         useUrl: "",
@@ -52,27 +91,8 @@ const dataObject = [
         name: "door",
         position: "door",
         lookText: "It's a heavy wooden door with iron hinges.",
-        openText: "As if by magic, the skull rises.",
-        takenUrl: "./room1-doorway.png",
-      },
-    ],
-  },
-  {
-    baseUrl: "room2",
-    roomScript: "",
-    mapCoordinates: [
-      { index: 2, position: "top" },
-      { index: "", position: "" },
-      { index: 0, position: "bottom" },
-      { index: "", position: "" },
-    ],
-    items: [
-      {
-        name: "",
-        position: "",
-        lookText:
-          "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
-        openText: "As if by magic, the skull rises.",
+        openText:
+          "The door is open. It's the door leading into the castle Shadowgate.",
         useText: "",
         leaveText: "",
         takeText: "",
@@ -89,11 +109,80 @@ const dataObject = [
         speakUrl: "",
       },
       {
-        name: "",
+        name: "wall",
+        position: "wall",
+        lookText: "It's a stone wall.",
+        openText: "",
+        useText: "",
+        leaveText: "",
+        takeText: "",
+        closeText: "",
+        hitText: "",
+        speakText: "",
+        lookUrl: "",
+        openUrl: "",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
+      },
+    ],
+  },
+  {
+    baseUrl: "room2",
+    entryScript:
+      "That pitiful wizard Lakmir was a fool to send a buffoon like you to stop me. You will surely regret it for the only thing here for you is a horrible death! The sound of maniacal laughter echoes in your ears.",
+    reentryScript:
+      "You stand in a long corridor. Huge stone archways line the entire hall.",
+    mapCoordinates: [
+      { index: 2, position: "top" },
+      { index: "", position: "" },
+      { index: 0, position: "bottom" },
+      { index: "", position: "" },
+    ],
+    items: [
+      {
+        name: "closet door",
         position: "",
-        lookText: "It's a heavy wooden door with iron hinges.",
-        openText: "As if by magic, the skull rises.",
-        takenUrl: "./room1-doorway.png",
+        lookText:
+          "Even though this door is only an inch thick, it is very sturdy.",
+        openText: "The door is locked",
+        useText: "",
+        leaveText: "",
+        takeText: "",
+        closeText: "",
+        hitText: "",
+        speakText: "",
+        lookUrl: "",
+        openUrl: "",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
+      },
+      {
+        name: "far door",
+        position: "",
+        lookText: "This wooden door is reinforced with heavy sheets of steel.",
+        openText: "the door is locked",
+        useText: "",
+        leaveText: "",
+        takeText: "",
+        closeText: "",
+        hitText: "",
+        speakText: "",
+        lookUrl: "",
+        openUrl: "",
+        useUrl: "",
+        leaveUrl: "",
+        takeUrl: "",
+        closeUrl: "",
+        hitUrl: "",
+        speakUrl: "",
       },
     ],
   },
@@ -127,14 +216,30 @@ const renderRoom = (dataObject) => {
 const renderItems = (dataObject) => {
   dataObject[roomIndex].items.forEach((item) => {
     let itemDot = document.createElement("div");
-    itemDot.innerHTML = `<div onclick="evaluateFunction(${item.name}, ${item.lookText}, ${item.openText}, ${item.useText}, ${item.leaveText}, ${item.takeText}, ${item.closeText}, ${item.hitText}, ${item.speakText}, ${item.lookUrl}, ${item.openUrl}, ${item.useUrl}, ${item.leaveUrl}, ${item.takeUrl}, ${item.closeUrl}, ${item.hitUrl}, ${item.speakUrl})">*</div>`;
+    itemDot.innerHTML = `<div>*</div>`;
     console.log(item.name);
-    itemDot.className = `${item.position}`; //to position the elements
+    itemDot.classList.add(`${item.position}`, "item"); //to position the elements
     console.log(item.position);
     roomArea.appendChild(itemDot);
   });
 };
 
+//player actions
+let action = "";
+primaryActions.addEventListener("click", (event) => {
+  action = event.target.getAttribute("value");
+  console.log(action);
+});
+
+//event listener for newly created items, checks for a class of "item"
+const body = document.querySelector("body");
+body.addEventListener("click", function (event) {
+  if (event.target.classList.contains("item")) {
+    console.log(event.target.classList[0]);
+    evaluateFunction(action, event.target.classList[0]);
+  }
+});
+//`${item.name}, ${item.lookText}, ${item.openText}, ${item.useText}, ${item.leaveText}, ${item.takeText}, ${item.closeText}, ${item.hitText}, ${item.speakText}, ${item.lookUrl}, ${item.openUrl}, ${item.useUrl}, ${item.leaveUrl}, ${item.takeUrl}, ${item.closeUrl}, ${item.hitUrl}, ${item.speakUrl}`;
 //changes room, calls renderMap to generate new room
 const changeRoom = (y) => {
   mapArea.innerHTML = "";
@@ -149,72 +254,6 @@ const changeRoom = (y) => {
 renderMap(dataObject);
 renderItems(dataObject);
 
-// name: "skull",
-//         left: "100px",
-//         right: "100px",
-//         lookText:
-//           "It's the skull of some creature. Its meaning seems quite clear: death lurks inside.",
-//         openText: "As if by magic, the skull rises.",
-//         openUrl: "./room1-doorway.png",
-//         takenUrl: "./room1-doorway.png",
-//functions executing on player actions
-let genericResponses = "randomly generated responses";
-const open = (item) => {
-  switch (item) {
-    case "skull":
-      console.log("the skull opens, it reveals a key");
-      let key = document.createElement("div");
-      key.innerHTML = "Key";
-      locationItems.replaceChild(key, skull);
-      key.addEventListener("click", () => {
-        item = "key";
-        console.log(item);
-        evaluateFunction(item);
-      });
-      break;
-    case "door":
-      console.log("the door is locked");
-      break;
-    case "self":
-      console.log("you are wasting your time");
-      break;
-  }
-};
-
-const look = (item) => {
-  switch (item) {
-    case "skull":
-      console.log("it is an old skull fitted to the wall");
-      break;
-    case "door":
-      console.log("it is an old, and firmly locked wooden door");
-      break;
-    case "self":
-      console.log("there is no time for vanity");
-      break;
-    case "key":
-      console.log("a tarnished brass key is fixed to the wall");
-      break;
-  }
-};
-
-const take = (item) => {
-  switch (item) {
-    case "skull":
-      console.log("you cannot take it");
-      break;
-    case "door":
-      console.log("you are wasting your time");
-      break;
-    case "key":
-      console.log("you have taken the key");
-      inventoryArray.push("key");
-      console.log(inventoryArray);
-      PlayerInventory.innerHTML = inventoryArray;
-      break;
-  }
-};
-
 //*render initial room image
 /*
 const renderRoom = (roomNumber) => {
@@ -224,47 +263,42 @@ roomNumber = 0; //you start out at 0, then clicking on the map, changes that val
 renderRoom(roomNumber);
 */
 
-//render items on the screen
-/*
-renderedItemsArray = [];
-renderitems(roomNumber);
-const renderItems = (roomNumber) => {
-  let newItem = document.createElemente("div");
-  newItem.style.width = `${dataObject[roomNumber].width}`;
-  newItem.style.height = `${dataObject[roomNumber].height}`;
-  newItem.style.left = `${dataObject[roomNumber].left}`;
-  newItem.style.top = `${dataObject[roomNumber].top}`;
-  newItem.addEventListener("click", (e) => {
-    item = `${dataObject[roomNumber].item}`;
-    renderedItemsArray.push(item);
-    evaluateFunction(item);
-  });
-};
-*/
-////////////////////////////////////
-////////present in each room///////
-////////////////////////////////////
-
-//player actions
-let action = "";
-playerActions.addEventListener("click", (e) => {
-  action = e.target.value;
-  console.log(action);
-});
-
 //functions called based on the 'action' taken and the 'item' selected
-function evaluateFunction() {
-  switch (
-    action //i.e. if the action is 'open', call open(item)
-  ) {
-    case "open":
-      open(item);
-      break;
-    case "take":
-      take(item);
-      break;
-    case "look":
-      look(item);
-      break;
+const evaluateFunction = (action, x) => {
+  let itemProperties = dataObject[roomIndex].items.find((currentItemInfo) => {
+    return currentItemInfo.position == x;
+  }); //'itemProperties' now contains all the properties of the selected item
+  console.log(itemProperties);
+  console.log(itemProperties.openText);
+  if (action === "look" && itemProperties.openText != "") {
+    console.log(itemProperties.lookText);
+    console.log(itemProperties.lookUrl);
+  } else if (action === "open" && itemProperties.openText != "") {
+    console.log(itemProperties.openText);
+    console.log(itemProperties.openUrl);
+  } else if (action === "use" && itemProperties.useText != "") {
+    console.log(itemProperties.useText);
+    console.log(itemProperties.useUrl);
+  } else if (action === "leave" && itemProperties.leaveText != "") {
+    console.log(itemProperties.leaveText);
+    console.log(itemProperties.leaveUrl);
+  } else if (action === "take" && itemProperties.takeText != "") {
+    console.log(itemProperties.takeText);
+    if (
+      itemProperties.takeText[0] === `The ${itemProperties.name} is in hand`
+    ) {
+      playerInventoryArray.push(itemProperties.name);
+      console.log(itemProperties.takeUrl);
+    }
+  } else if (action === "close" && itemProperties.closeText != "") {
+    console.log(itemProperties.closeText);
+    console.log(itemProperties.closeUrl);
+  } else if (action === "hit" && itemProperties.hitText != "") {
+    console.log(itemProperties.hitText);
+    console.log(itemProperties.hitUrl);
+  } else if (action === "speak" && itemProperties.speakText != "") {
+    console.log(itemProperties.speakText);
+    console.log(itemProperties.speakUrl);
+  } else {
   }
-}
+};
